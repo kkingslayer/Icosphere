@@ -64,16 +64,12 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
            super.viewDidLoad()
-           
           setupView()
           setupScene()
-         
-           
        }
        
        override func viewDidAppear(_ animated: Bool) {
            super.viewDidAppear(true)
-           
            if let overlay = GameViewController.gameOverlay {
                overlay.silentScoreUpdate()
            }
@@ -159,7 +155,7 @@ class GameViewController: UIViewController {
     func touchesFunction(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let scene = gameScene {
-           // scene.createBall()
+           scene.createBall()
         }
         
         if let touch = touches.first {
@@ -171,6 +167,7 @@ class GameViewController: UIViewController {
                         self.menuScene = nil
                     })
                 
+                    
                     highscoreLabel = UILabel(frame: CGRect(origin: CGPoint(x: self.view.frame.width/2, y: self.view.frame.height/2 + self.view.frame.width/2.5), size: CGSize(width: self.view.frame.width, height: 100))) //?????
                          highscoreLabel.center = CGPoint(x: self.view.frame.width/6, y: self.view.frame.height/2 - self.view.frame.width/1.05)
                          highscoreLabel.textAlignment = .center
