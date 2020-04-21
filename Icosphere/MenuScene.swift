@@ -27,15 +27,15 @@ class MenuScene: SCNScene, SCNSceneRendererDelegate {
         setupCameraAndLights()
         setupScenery()
         
-        let propsScene = SCNScene(named: "/art.scnassets/Icospheres.dae")!
+        let propsScene = SCNScene(named: "/art.scnassets/IcosphereCoin.dae")!
         emptyGrass1.scale = SCNVector3(easyScale: 0.15)
-        emptyGrass1.position = SCNVector3(0, -1.3, 0)
+        emptyGrass1.position = SCNVector3(7, -1.36, 0)
         
         emptyGrass2.scale = SCNVector3(easyScale: 0.15)
-        emptyGrass2.position = SCNVector3(4.45, -1.3, 0)
+        emptyGrass2.position = SCNVector3(0, -1.36, 0)
         
-        let grass1 = propsScene.rootNode.childNode(withName: "Icosphere", recursively: true)!
-        grass1.position = SCNVector3(-5.0, 0.5, 0)
+        let grass1 = propsScene.rootNode.childNode(withName: "IcosphereCoin", recursively: true)!
+        grass1.position = SCNVector3(-17, 0.5, 0)
         
         let grass2 = grass1.clone()
         grass2.position = SCNVector3(0, 0.5, 0)
@@ -47,10 +47,10 @@ class MenuScene: SCNScene, SCNSceneRendererDelegate {
         rootNode.addChildNode(emptyGrass2)
         
         
-        let upMove = SCNAction.move(by: SCNVector3(0, 0.2, 0), duration: 0.1)
+        let upMove = SCNAction.move(by: SCNVector3(0, 0.1, 0), duration: 0.1)
         upMove.timingMode = .easeInEaseOut
         
-        let downMove = SCNAction.move(by: SCNVector3(0, -0.2, 0), duration: 0.2)
+        let downMove = SCNAction.move(by: SCNVector3(0, -0.1, 0), duration: 0.1)
         downMove.timingMode = .easeInEaseOut
         
         let upDownSeq = SCNAction.sequence([upMove, downMove])

@@ -42,32 +42,12 @@ class GameViewController: UIViewController {
     var str = String()
     var showStatusBar = true
     var tesst:  SCNNode!
-/*    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.count = 0
-        setupView()
-        setupScene()
-       // createBox()
-       //createBall()
-        setupCamera()
-        setupLight()
-        
-         AudioServicesPlaySystemSound(1519)
-    //    createCount(m: true)
-        
-        scnScene.physicsWorld.contactDelegate = self
-    }
-    */
-    
-    
-    
     
     override func viewDidLoad() {
            super.viewDidLoad()
           setupView()
           setupScene()
        }
-       
        override func viewDidAppear(_ animated: Bool) {
            super.viewDidAppear(true)
            if let overlay = GameViewController.gameOverlay {
@@ -155,7 +135,11 @@ class GameViewController: UIViewController {
     func touchesFunction(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let scene = gameScene {
-           scene.createBall()
+                  scene.createBox()
+                  scene.createBall()
+                  scene.setupCamera()
+                  scene.setupLight()
+          
         }
         
         if let touch = touches.first {
@@ -166,7 +150,6 @@ class GameViewController: UIViewController {
                         GameViewController.gameOverlay!.addScoreLabel()
                         self.menuScene = nil
                     })
-                
                     
                     highscoreLabel = UILabel(frame: CGRect(origin: CGPoint(x: self.view.frame.width/2, y: self.view.frame.height/2 + self.view.frame.width/2.5), size: CGSize(width: self.view.frame.width, height: 100))) //?????
                          highscoreLabel.center = CGPoint(x: self.view.frame.width/6, y: self.view.frame.height/2 - self.view.frame.width/1.05)
@@ -191,6 +174,5 @@ class GameViewController: UIViewController {
             }
         }
     }
-      
     override var prefersStatusBarHidden: Bool {return true}
 }

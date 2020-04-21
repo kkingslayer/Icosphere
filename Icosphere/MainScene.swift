@@ -37,118 +37,13 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
       var showStatusBar = true
       var tesst:  SCNNode!
     
-     let emptyGrass1 = SCNNode()
-     let emptyGrass2 = SCNNode()
      
      var runningUpdate = true
      var timeLast: Double?
      let speedConstant = -0.7
      
      let empty = SCNNode()
-     var bird = SCNNode()
-     
-     
-     convenience init(create: Bool) {
-         self.init()
-           
-           let rotationAction1 = SCNAction.rotate(toAxisAngle: SCNVector4(1, 0, 0, 0.78), duration: 0)
-           let rotationAction2 = SCNAction.rotate(toAxisAngle: SCNVector4(1, 0, 0, -1.57), duration: 2)
-           rotationAction2.timingMode = .easeOut
-           
-         //  rotationSeq = SCNAction.sequence([rotationAction1, rotationAction2])
-          
-           setupCameraAndLights()
-           setupScenery()
-           
-           physicsWorld.gravity = SCNVector3(0, -5.0, 0)
-           physicsWorld.contactDelegate = self
-           
-           let propsScene = SCNScene(named: "/art.scnassets/Icospheres.dae")!
-           emptyGrass1.scale = SCNVector3(easyScale: 0.15)
-           emptyGrass1.position = SCNVector3(0, -1.3, 0)
-           
-           emptyGrass2.scale = SCNVector3(easyScale: 0.15)
-           emptyGrass2.position = SCNVector3(4.45, -1.3, 0)
-           
-           let grass1 = propsScene.rootNode.childNode(withName: "Icosphere", recursively: true)!
-           grass1.position = SCNVector3(-5.0, 0, 0)
-           
-           let grass2 = grass1.clone()
-           grass2.position = SCNVector3(-5.0, 0, 0)
-           
-           emptyGrass1.addChildNode(grass1)
-           emptyGrass2.addChildNode(grass2)
-           
-           rootNode.addChildNode(emptyGrass1)
-           rootNode.addChildNode(emptyGrass2)
-         
-     }
-     
-    func setupCameraAndLights() {
-          let cameraNode = SCNNode()
-          cameraNode.camera = SCNCamera()
-          cameraNode.camera!.usesOrthographicProjection = false
-          cameraNode.position = SCNVector3(0, 0, 0)
-          cameraNode.pivot = SCNMatrix4MakeTranslation(0, 0, -3)
-          rootNode.addChildNode(cameraNode)
-          
-          let lightOne = SCNLight()
-          lightOne.type = .spot
-          lightOne.spotOuterAngle = 90
-          lightOne.attenuationStartDistance = 0.0
-          lightOne.attenuationFalloffExponent = 2
-          lightOne.attenuationEndDistance = 30.0
-          
-          let lightNodeSpot = SCNNode()
-          lightNodeSpot.light = lightOne
-          lightNodeSpot.position = SCNVector3(0, 10, 1)
-          rootNode.addChildNode(lightNodeSpot)
-          
-          let lightNodeFront = SCNNode()
-          lightNodeFront.light = lightOne
-          lightNodeFront.position = SCNVector3(0, 1, 15)
-          rootNode.addChildNode(lightNodeFront)
-          
-          let emptyAtCenter = SCNNode()
-          emptyAtCenter.position = SCNVector3Zero
-          rootNode.addChildNode(emptyAtCenter)
-          
-          lightNodeSpot.constraints = [SCNLookAtConstraint(target: emptyAtCenter)]
-          lightNodeFront.constraints = [SCNLookAtConstraint(target: emptyAtCenter)]
-          cameraNode.constraints = [SCNLookAtConstraint(target: emptyAtCenter)]
-          
-          let ambientLight = SCNNode()
-          ambientLight.light = SCNLight()
-          ambientLight.light!.type = .ambient
-          ambientLight.light!.color = UIColor(white: 0.05, alpha: 1.0)
-          rootNode.addChildNode(ambientLight)
-      }
-      
-      func setupScenery() {
-          
-          let groundGeo = SCNBox(width: 4, height: 0.5, length: 0.4, chamferRadius: 0)
-          groundGeo.firstMaterial!.diffuse.contents = #colorLiteral(red: 1, green: 0.7685058713, blue: 0, alpha: 1)
-          groundGeo.firstMaterial!.specular.contents = UIColor.black
-          groundGeo.firstMaterial!.emission.contents = #colorLiteral(red: 0.6220703125, green: 0.3915527463, blue: 0.06076388889, alpha: 1)
-          
-          let groundNode = SCNNode(geometry: groundGeo)
-          
-          let emptySand = SCNNode()
-          emptySand.addChildNode(groundNode)
-          emptySand.position.y = -1.63
-
-          rootNode.addChildNode(emptySand)
-          
-          let collideGround = SCNNode(geometry: groundGeo)
-          collideGround.opacity = 0
-          collideGround.physicsBody = SCNPhysicsBody.kinematic()
-          collideGround.physicsBody!.mass = 1000
-          
-          collideGround.position.y = -1.36
-          
-          rootNode.addChildNode(collideGround)
-          
-      }
+    
     func addScore() {
              score += 1
             self.count += 1
@@ -244,7 +139,7 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
         let ballMaterial = SCNMaterial()
         ballMaterial.diffuse.contents = UIColor(red: 0.71, green: 0.48, blue: 0.61, alpha: 1)
         ballGeometry.materials = [ballMaterial]
-        ball.position = SCNVector3Make(0, 1.1, 0)
+        ball.position = SCNVector3Make(0, -1.1, 0)
         ball.physicsBody = SCNPhysicsBody(type: .static, shape: SCNPhysicsShape(node: ball, options: nil))
         ball.physicsBody?.categoryBitMask = bodyType.Ball
         ball.physicsBody?.collisionBitMask = bodyType.Coin
@@ -330,37 +225,82 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
           }
 
         
-        func die(){
-                      ball.runAction(SCNAction.move(to: SCNVector3Make(ball.position.x, ball.position.y - 10, ball.position.z), duration: 1.0))
-               let wait = SCNAction.wait(duration: 0.5)
-               let removeBall = SCNAction.run { (node) in
-                   self.scnScene.rootNode.enumerateChildNodes({ (node, stop) in node.removeFromParentNode()})
-                   self.count = 0
-                   self.score = 0
-                   updateScoreLabel()
-                  }
-               
-            func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-                   if dead == false{
-                   let deleteBox = self.scnScene.rootNode.childNode(withName: "\(prevBoxNumber)", recursively: true)
-                   let currentBox = self.scnScene.rootNode.childNode(withName: "\(prevBoxNumber + 1)", recursively: true)
-                      if (deleteBox?.position.x)!  > ball.position.x + 1 || (deleteBox?.position.z)! > ball.position.z + 1 {
-                          prevBoxNumber += 1
-                         fadeOut(node: deleteBox!)
-                          createBoxes()
-                      }
-                   if ball.position.x > currentBox!.position.x - 0.5 && ball.position.x < currentBox!.position.x + 0.5 ||
-                       ball.position.z > currentBox!.position.z - 0.5 && ball.position.z < currentBox!.position.z + 0.5 //on platform
-                   {}
-                  else {die()
-                       dead = true
-                       }
-                  }
-               }
+       func die() {
+              ball.runAction(SCNAction.move(to: SCNVector3Make(ball.position.x, ball.position.y - 10, ball.position.z), duration: 1.0))
+              
+              let wait = SCNAction.wait(duration: 0.5)
+              
+              let removeBall = SCNAction.run { (node) in
+                  self.scnScene.rootNode.enumerateChildNodes({ (node, stop) in
+                      node.removeFromParentNode()
+                  })
+              }
+              
+              let createScene = SCNAction.run { (node) in
+               //   self.setupView()
+                 // self.setupScene()
+                  self.createBox()
+                  self.createBall()
+                  //self.setupCamera()
+                  //self.setupLight()
+              }
+              
+              let sequance = SCNAction.sequence([wait, removeBall, createScene])
+              
+              ball.runAction(sequance)
+          }
             
-   
+   func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+          if dead == false {
+              let deleteBox = self.scnScene.rootNode.childNode(withName: "\(prevBoxNumber)", recursively: true)
+              
+              let currentBox = self.scnScene.rootNode.childNode(withName: "\(prevBoxNumber + 1)", recursively: true)
+              
+              if deleteBox!.position.x > ball.position.x + 1 || deleteBox!.position.z > ball.position.z + 1 {
+                  prevBoxNumber += 1
+                  fadeOut(node: deleteBox!)
+                  createBoxes()
+              }
+              
+              if ball.position.x > currentBox!.position.x - 0.5 && ball.position.x < currentBox!.position.x + 0.5 || ball.position.z > currentBox!.position.z - 0.5 && ball.position.z < currentBox!.position.z + 0.5 {
+                  //On Platform
+              } else {
+                  die()
+                  dead = true
+              }
+          }
+      }
 
         
+
 }
-}
+    
+    
+    
+    func setupCamera() {
+           cameraNode.camera = SCNCamera()
+           cameraNode.camera?.usesOrthographicProjection = true
+           cameraNode.camera?.orthographicScale = 3
+           cameraNode.position = SCNVector3Make(20, 20, 20)
+           cameraNode.eulerAngles = SCNVector3Make(-45, 45, 0)
+           let constraint = SCNLookAtConstraint(target: ball)
+           constraint.isGimbalLockEnabled = true
+           cameraNode.constraints = [constraint]
+           scnScene.rootNode.addChildNode(cameraNode)
+           ball.addChildNode(cameraNode)
+       }
+       
+       func setupLight() {
+           let light = SCNNode()
+           light.light = SCNLight()
+           light.light?.type = .directional
+           light.eulerAngles = SCNVector3Make(-45, 45, 0)
+           scnScene.rootNode.addChildNode(light)
+           
+           let light2 = SCNNode()
+           light2.light = SCNLight()
+           light2.light?.type = .directional
+           light2.eulerAngles = SCNVector3Make(45, 45, 0)
+           scnScene.rootNode.addChildNode(light2)
+       }
 }
