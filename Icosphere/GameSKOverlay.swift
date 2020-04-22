@@ -1,10 +1,3 @@
-//
-//  GameSKOverlay.swift
-//  FlappyBird3D
-//
-//  Created by Test on 15.11.2017.
-//  Copyright © 2017 Test. All rights reserved.
-//
 
 import UIKit
 import SpriteKit

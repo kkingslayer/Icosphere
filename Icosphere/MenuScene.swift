@@ -1,10 +1,4 @@
-//
-//  MenuScene.swift
-//  FlappyBird3D
-//
-//  Created by Test on 15.11.2017.
-//  Copyright © 2017 Test. All rights reserved.
-//
+
 
 import SceneKit
 
@@ -107,20 +101,16 @@ class MenuScene: SCNScene, SCNSceneRendererDelegate {
         groundGeo.firstMaterial!.diffuse.contents = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
         groundGeo.firstMaterial!.specular.contents = UIColor.black
         groundGeo.firstMaterial!.emission.contents = #colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)
-        
         let groundNode = SCNNode(geometry: groundGeo)
-        
         let emptySand = SCNNode()
         emptySand.addChildNode(groundNode)
         emptySand.position.y = -1.63
-        
         rootNode.addChildNode(emptySand)
         
     }
-    
+  
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         let dt: Double
-        
         if runningUpdate {
             if let lt = timeLast {
                 dt = time - lt
