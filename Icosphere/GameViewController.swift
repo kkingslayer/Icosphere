@@ -24,7 +24,6 @@ class GameViewController: UIViewController {
     var menuScene: MenuScene?
     static var gameOverlay: GameSKOverlay?
     
-    
     let scnScene = SCNScene()
     let cameraNode = SCNNode()
     
@@ -34,9 +33,6 @@ class GameViewController: UIViewController {
     var correctPath = Bool()
     var repeatt = Bool()
     var prevBoxNumber = Int()
-    var score = Int()
-    var highscore = Int()
-    
     var scoreLabel = UILabel()
     var highscoreLabel = UILabel()
     var str = String()
@@ -66,15 +62,6 @@ class GameViewController: UIViewController {
     }
     
     
-    
-    
-    @objc func updateScoreLabel() {
-        scoreLabel.text = "Score: \(score)"
-        highscoreLabel.text = "Highscore: \(highscore)"
-    }
-    
-    
-    
     func setupView() {
         self.view.backgroundColor = UIColor(red: 0.94, green: 0.71, blue: 0.74, alpha: 0.74)
         scnView = self.view as? SCNView
@@ -88,7 +75,6 @@ class GameViewController: UIViewController {
             scnView.isPlaying = true
             scnView.delegate = scene
             scnView.overlaySKScene = overlay
-            //   scnView.backgroundColor = #colorLiteral(red: 0.721568644, green: 0.9107023335, blue: 0.9005305667, alpha: 1)
         }
     }
     
@@ -100,7 +86,6 @@ class GameViewController: UIViewController {
         cameraNode.eulerAngles = SCNVector3Make(-45,45,0)
         scnScene.rootNode.addChildNode(cameraNode)
     }
-    
     
     
     func setupLight() {
@@ -132,40 +117,25 @@ class GameViewController: UIViewController {
             return nil
         }
     }
-func touchesFunction(_ touches: Set<UITouch>, with event: UIEvent?) {
-    
-    if let scene = gameScene { scene.touchh()}
-    
-    if let touch = touches.first {
-        if let name = checkNodeAtPosition(touch) {
-            if name == "playButton" {
-                gameScene = MainScene(create: true)
-                changeScene(gameScene, newDelegate: gameScene, completion: {
-                    GameViewController.gameOverlay!.addScoreLabel()
-                    self.menuScene = nil
-                })
-                highscoreLabel = UILabel(frame: CGRect(origin: CGPoint(x: self.view.frame.width/2, y: self.view.frame.height/2 + self.view.frame.width/2.5), size: CGSize(width: self.view.frame.width, height: 100))) //?????
-                highscoreLabel.center = CGPoint(x: self.view.frame.width/6, y: self.view.frame.height/2 - self.view.frame.width/1.05)
-                highscoreLabel.textAlignment = .center
-                highscoreLabel.text = "Highscore: \(highscore)"
-                highscoreLabel.textColor = UIColor.white
-                self.view.addSubview(highscoreLabel)
-                
-                scoreLabel = UILabel(frame: CGRect(origin: CGPoint(x: self.view.frame.width/2, y: self.view.frame.height/2 + self.view.frame.width/2.5), size: CGSize(width: self.view.frame.width, height: 100))) //?????
-                scoreLabel.center = CGPoint(x: self.view.frame.width/2, y: self.view.frame.height/2 + self.view.frame.width/1.1)
-                scoreLabel.textAlignment = .center
-                scoreLabel.text = "Score: \(score)"
-                scoreLabel.textColor = UIColor.white
-                self.view.addSubview(scoreLabel)
-            }
-           /* else if name == "replayButton" {
-                menuScene = MenuScene(create: true)
-                changeScene(menuScene, newDelegate: menuScene, completion: {
-                    GameViewController.gameOverlay!.addMenuItems()
-                    self.gameScene = nil})
-            }*/
+    func touchesFunction(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let scene = gameScene {
+            
+            scene.touchh()
         }
-    }
+        
+        if let touch = touches.first {
+            if let name = checkNodeAtPosition(touch) {
+                if name == "playButton" {
+                    gameScene = MainScene(create: true)
+                    changeScene(gameScene, newDelegate: gameScene, completion: {
+                        GameViewController.gameOverlay!.addScoreLabel()
+                        self.menuScene = nil
+                    })
+                    
+                }
+            }
+        }
     }
     override var prefersStatusBarHidden: Bool {return true}
 }

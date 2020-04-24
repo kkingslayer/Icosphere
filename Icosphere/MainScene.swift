@@ -11,15 +11,15 @@ import UIKit
 import QuartzCore
 import SceneKit
 import AudioToolbox
-
+import SpriteKit
 class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate {
     
-    var scnView: SCNView!
+    var scnview: SCNView!
     let scnScene = SCNScene()
     var firstBox: SCNNode!
     var tempBox: SCNNode!
     var ball: SCNNode!
-    var textt: SCNNode!
+    var count_nimb: SCNNode!
     var firstText: SCNText!
     var left = Bool()
     var correctPath = Bool()
@@ -27,66 +27,46 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
     var firstBoxNumber = Int()
     var count = Int() ;
     var prevBoxNumber = Int()
-    var score = Int()
-    var highscore = Int()
+    
     var dead = Bool()
-    var scoreLabel = UILabel()
-    var highscoreLabel = UILabel()
     var str = String()
     var showStatusBar = true
-    var tesst:  SCNNode!
-    
+    var hat:  SCNNode!
+    let cameraNode = SCNNode()
     
     var runningUpdate = true
     var timeLast: Double?
     let speedConstant = -0.7
     let empty = SCNNode()
     
-    
-    
     func touchh() {
         if dead == false {
-            // self.performSelector(onMainThread: #selector(GameViewController.updateScoreLabel), with: nil, waitUntilDone: false)
             if left == false {
                 ball.removeAllActions()
-                ball.runAction(SCNAction.repeatForever(SCNAction.move(by: SCNVector3Make(-50, 0, 0), duration: 20)))
+                ball.runAction(SCNAction.repeatForever(SCNAction.move(by: SCNVector3Make(-50, 0, 0), duration: 13)))
                 left = true
             } else {
                 ball.removeAllActions()
-                ball.runAction(SCNAction.repeatForever(SCNAction.move(by: SCNVector3Make(0, 0, -50), duration: 20)))
+                ball.runAction(SCNAction.repeatForever(SCNAction.move(by: SCNVector3Make(0, 0, -50), duration: 13)))
                 left = false
             }
         }
     }
     
-    func addScore() {
-        score += 1
-        self.count += 1
-        AudioServicesPlaySystemSound(1519)
-        
-        self.performSelector(onMainThread: #selector(GameViewController.updateScoreLabel), with: nil, waitUntilDone: false)
-        if score > highscore {
-            highscore = score
-            let scoreDefaults = UserDefaults.standard
-            scoreDefaults.set(highscore, forKey: "highscore")
-        }
-    }
     
     
     func createCount( ){
-        fadeCount(node: textt)
-        textt = SCNNode()
+        fadeCount(node: count_nimb)
+        count_nimb = SCNNode()
         str = String(count)
         let whiteGeometry = SCNText(string: str, extrusionDepth: 0.3)
         whiteGeometry.font = UIFont.systemFont(ofSize: 1.0)
-        // whiteGeometry.firstMaterial?.diffuse.contents = UIColor(red: 220, green: 200, blue: 200, alpha: 1)
-        textt.geometry = whiteGeometry
-        textt.position  = SCNVector3Make(-0.18, 0.8, -0.45)
+        whiteGeometry.firstMaterial?.diffuse.contents = UIColor(red: 220, green: 200, blue: 200, alpha: 1)
+        count_nimb.geometry = whiteGeometry
+        count_nimb.position  = SCNVector3Make(-0.18, 0.8, -0.45)
         
-        rootNode.addChildNode(textt)
-        ball.addChildNode(textt)
-        
-        
+        rootNode.addChildNode(count_nimb)
+        ball.addChildNode(count_nimb)
     }
     
     
@@ -95,17 +75,17 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
         let nodeB = contact.nodeB
         if nodeA.physicsBody?.categoryBitMask == bodyType.Coin && nodeB.physicsBody?.categoryBitMask == bodyType.Ball {
             nodeA.removeFromParentNode()
-            addScore()
-            //  if count > 0
-            //   {( m: false)}
+            GameViewController.gameOverlay!.updateScoreLabel()
+            self.count += 1
+            AudioServicesPlaySystemSound(1519)
             createCount()
         }
         else if nodeA.physicsBody?.categoryBitMask == bodyType.Ball && nodeB.physicsBody?.categoryBitMask == bodyType.Coin {
             nodeB.removeFromParentNode()
-            addScore()
+            GameViewController.gameOverlay!.updateScoreLabel()
+            self.count += 1
+            AudioServicesPlaySystemSound(1519)
             createCount()
-            // if count > 0 { createCount(m: false)}
-            //    else { createCount( m: true)}
         }
     }
     
@@ -131,10 +111,9 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
     func addCoin(box: SCNNode){
         physicsWorld.gravity = SCNVector3Make(0, 0, 0)
         let rotate = SCNAction.rotate(toAxisAngle: SCNVector4(x: 0, y: 0.5, z: 0, w: .pi * 2), duration: 3.5)
-        // let rotate =   SCNAction.
-        let randomCoin = arc4random() % 5
+        let randomCoin = arc4random() % 8
         if randomCoin == 3 {
-            let addCoinScene = SCNScene(named: "/art.scnassets/f.dae")
+            let addCoinScene = SCNScene(named: "/art.scnassets/coin_2.dae")
             let coin = addCoinScene?.rootNode.childNode(withName: "Icos", recursively: true)
             coin?.position = SCNVector3Make(box.position.x, box.position.y + 1, box.position.z)
             coin?.scale = SCNVector3Make(0.2, 0.2, 0.2)
@@ -162,25 +141,24 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
         ball.physicsBody?.collisionBitMask = bodyType.Coin
         ball.physicsBody?.isAffectedByGravity = false
         
-        textt = SCNNode()
+        count_nimb = SCNNode()
         str = String(count)
         let whiteGeometry = SCNText(string: str, extrusionDepth: 0.3)
         whiteGeometry.font = UIFont.systemFont(ofSize: 1.0)
         whiteGeometry.firstMaterial?.diffuse.contents = UIColor.white
-        textt.geometry = whiteGeometry
-        textt.position  = SCNVector3Make(-0.18, 0.8, -0.45)
+        count_nimb.geometry = whiteGeometry
+        count_nimb.position  = SCNVector3Make(-0.18, 0.8, -0.45)
         
-        tesst = SCNNode()
+        hat = SCNNode()
+        let hatGeometry = SCNPyramid(width: 0.5, height: 0.35, length: 0.5)
+        hat = SCNNode (geometry: hatGeometry)
+        let hatMaterial = SCNMaterial()
+        hatMaterial.diffuse.contents = UIColor(red: 0.94, green: 0.71, blue: 0.74, alpha: 1)
+        hatGeometry.materials = [hatMaterial]
+        hat.position = SCNVector3Make(0, 0.14, 0)
         
-        let tesstGeometry = SCNPyramid(width: 0.5, height: 0.35, length: 0.5)
-        tesst = SCNNode (geometry: tesstGeometry)
-        let tesstMaterial = SCNMaterial()
-        tesstMaterial.diffuse.contents = UIColor(red: 0.94, green: 0.71, blue: 0.74, alpha: 1)
-        tesstGeometry.materials = [tesstMaterial]
-        tesst.position = SCNVector3Make(0, 0.14, 0)
-        
-        ball.addChildNode(tesst)
-        ball.addChildNode(textt)
+        ball.addChildNode(hat)
+        ball.addChildNode(count_nimb)
         rootNode.addChildNode(ball)
     }
     
@@ -212,17 +190,13 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
     }
     
     
-    
-    
     func createBox() {
-        
         let scoreDefaults = UserDefaults.standard
         if scoreDefaults.integer(forKey: "highscore") != 0 {
-            highscore = scoreDefaults.integer(forKey: "highscore")
+            GameViewController.gameOverlay!.HighScoreNumber = scoreDefaults.integer(forKey: "highscore")
         } else {
-            highscore = 0
+            GameViewController.gameOverlay!.HighScoreNumber = 0
         }
-        //print(highscore)
         
         firstBoxNumber = 0
         prevBoxNumber = 0
@@ -243,12 +217,6 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
         
         for _ in 0...6 {createBoxes()}
     }
-    
-    func updateScoreLabel() {
-        scoreLabel.text = "Score: \(score)"
-        highscoreLabel.text = "Highscore: \(highscore)"
-    }
-    
     
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
@@ -275,7 +243,6 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
     
     
     func setupCameraAndLights() {
-        let cameraNode = SCNNode()
         
         cameraNode.camera = SCNCamera()
         cameraNode.camera?.usesOrthographicProjection = true
@@ -300,6 +267,8 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
         light2.eulerAngles = SCNVector3Make(45, 45, 0)
         rootNode.addChildNode(light2)
     }
+    
+    
     func die() {
         ball.runAction(SCNAction.move(to: SCNVector3Make(ball.position.x, ball.position.y - 10, ball.position.z), duration: 1.0))
         
@@ -310,29 +279,26 @@ class MainScene:  SCNScene, SCNSceneRendererDelegate, SCNPhysicsContactDelegate 
                 node.removeFromParentNode()
             })
         }
-        
+        count = 0
+        GameViewController.gameOverlay!.ScoreNumber = 0
         let createScene = SCNAction.run { (node) in
             self.createBox()
             self.createBall()
             self.setupCameraAndLights()
-            
         }
         
         let sequance = SCNAction.sequence([wait, removeBall, createScene])
-        
         ball.runAction(sequance)
+        
     }
     
     
     convenience init(create: Bool) {
         self.init()
-        
         createBox()
         createBall()
         setupCameraAndLights()
-        /*touchh()*/
-        //   physicsWorld.contactDelegate = self
-        
+        physicsWorld.contactDelegate = self
     }
 }
 

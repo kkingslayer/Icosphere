@@ -1,4 +1,3 @@
-
 import UIKit
 import SpriteKit
 
@@ -8,10 +7,12 @@ class GameSKOverlay: SKScene {
     
     var playButtonNode = SKSpriteNode()
     var titleGame = SKSpriteNode()
-    var replayButtonNode = SKSpriteNode()
     
-    var scoreLabel = SKLabelNode(fontNamed: "Arial")
-    var scoreNumber = 0
+    var ScoreLabel = SKLabelNode(fontNamed: "Arial")
+    var HighScoreLabel = SKLabelNode(fontNamed: "Arial")
+    
+    var ScoreNumber = 0
+    var HighScoreNumber = 0
     
     convenience init(main: GameViewController, size: CGSize) {
         self.init(sceneSize: size)
@@ -28,44 +29,26 @@ class GameSKOverlay: SKScene {
         playButtonNode.position = CGPoint(x: self.size.width / 2, y: (self.size.height / 2) - 100)
         playButtonNode.name = "playButton"
         
-        let replayTexture = SKTexture(image: UIImage(named: "Replay")!)
-        replayButtonNode = SKSpriteNode(texture: playTexture)
-        replayButtonNode.size = CGSize(width: 100, height: 100)
-        replayButtonNode.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        replayButtonNode.position = CGPoint(x: self.size.width / 2, y: (self.size.height / 2) - 200)
-        replayButtonNode.name = "replayButton"
-        
         self.addChild(playButtonNode)
         
         let titleTexture = SKTexture(image: UIImage(named: "Title")!)
         titleGame = SKSpriteNode(texture: titleTexture)
         titleGame.size = CGSize(width: 100, height: 150)
         titleGame.position = CGPoint(x: self.size.width / 2, y: (self.size.height / 2) + 180)
-        
         self.addChild(titleGame)
         
-        scoreLabel.text = "0"
-        scoreLabel.fontColor = UIColor.white
-        scoreLabel.fontSize = 64
-        scoreLabel.position = CGPoint(x: self.size.width / 2, y: (self.size.height) - 72)
+        HighScoreLabel.text = "0"
+        HighScoreLabel.fontColor = UIColor.white
+        HighScoreLabel.fontSize = 20
+        HighScoreLabel.position = CGPoint(x: self.size.width/2, y: (self.size.height)/10 - 48)
     }
     
     func addScoreLabel() {
-        
-        replayButtonNode.alpha = 0
-        
-        scoreNumber = 12
-        scoreLabel.text = String(scoreNumber)
-        
-        self.addChild(scoreLabel)
+        ScoreNumber = 0
+        HighScoreLabel.text =  String("HighScore:\(HighScoreNumber)")
+        self.addChild(HighScoreLabel)
     }
     
-    func addReplayButton() {
-        let opacityUp = SKAction.fadeAlpha(to: 1, duration: 0.5)
-        
-        self.addChild(replayButtonNode)
-        replayButtonNode.run(opacityUp)
-    }
     
     func addMenuItems() {
         self.addChild(titleGame)
@@ -73,13 +56,18 @@ class GameSKOverlay: SKScene {
     }
     
     func updateScoreLabel() {
-        scoreNumber += 1
-        scoreLabel.text = String(scoreNumber)
+        ScoreNumber += 1
+        if ScoreNumber > HighScoreNumber {
+            HighScoreNumber = ScoreNumber
+            let scoreDefaults = UserDefaults.standard
+            scoreDefaults.set(HighScoreNumber, forKey: "highscore")
+            HighScoreLabel.text = String(HighScoreNumber)
+        }
     }
     
     func silentScoreUpdate() {
-        self.addChild(scoreLabel)
-        scoreLabel.text = " "
+        self.addChild(ScoreLabel)
+        ScoreLabel.text = " "
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

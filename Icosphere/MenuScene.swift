@@ -1,19 +1,13 @@
-
-
 import SceneKit
-
 class MenuScene: SCNScene, SCNSceneRendererDelegate {
     
-    let emptyGrass1 = SCNNode()
-    let emptyGrass2 = SCNNode()
+    let emptyFloor1 = SCNNode()
+    let emptyFloor2 = SCNNode()
     
     var runningUpdate = true
     var timeLast: Double?
-    let speedConstant = -0.7
-    
+    let speedConstant = -0.78
     let empty = SCNNode()
-    var bird = SCNNode()
-    
     
     convenience init(create: Bool) {
         self.init()
@@ -22,23 +16,23 @@ class MenuScene: SCNScene, SCNSceneRendererDelegate {
         setupScenery()
         
         let propsScene = SCNScene(named: "/art.scnassets/IcosphereCoin.dae")!
-        emptyGrass1.scale = SCNVector3(easyScale: 0.15)
-        emptyGrass1.position = SCNVector3(7, -1.36, 0)
+        emptyFloor1.scale = SCNVector3(easyScale: 0.15)
+        emptyFloor1.position = SCNVector3(7, -1.37, 0)
         
-        emptyGrass2.scale = SCNVector3(easyScale: 0.15)
-        emptyGrass2.position = SCNVector3(0, -1.36, 0)
+        emptyFloor2.scale = SCNVector3(easyScale: 0.15)
+        emptyFloor2.position = SCNVector3(0, -1.37, 0)
         
-        let grass1 = propsScene.rootNode.childNode(withName: "IcosphereCoin", recursively: true)!
-        grass1.position = SCNVector3(-17, 0.5, 0)
+        let Floor1 = propsScene.rootNode.childNode(withName: "IcosphereCoin", recursively: true)!
+        Floor1.position = SCNVector3(-17, 0.5, 0)
         
-        let grass2 = grass1.clone()
-        grass2.position = SCNVector3(0, 0.5, 0)
+        let Floor2 = Floor1.clone()
+        Floor2.position = SCNVector3(0, 0.5, 0)
         
-        emptyGrass1.addChildNode(grass1)
-        emptyGrass2.addChildNode(grass2)
+        emptyFloor1.addChildNode(Floor1)
+        emptyFloor2.addChildNode(Floor2)
         
-        rootNode.addChildNode(emptyGrass1)
-        rootNode.addChildNode(emptyGrass2)
+        rootNode.addChildNode(emptyFloor1)
+        rootNode.addChildNode(emptyFloor2)
         
         
         let upMove = SCNAction.move(by: SCNVector3(0, 0.1, 0), duration: 0.1)
@@ -98,17 +92,16 @@ class MenuScene: SCNScene, SCNSceneRendererDelegate {
     func setupScenery() {
         
         let groundGeo = SCNBox(width: 4, height: 0.5, length: 0.4, chamferRadius: 0)
-        groundGeo.firstMaterial!.diffuse.contents = #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1)
+        groundGeo.firstMaterial!.diffuse.contents = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         groundGeo.firstMaterial!.specular.contents = UIColor.black
-        groundGeo.firstMaterial!.emission.contents = #colorLiteral(red: 0.4392156899, green: 0.01176470611, blue: 0.1921568662, alpha: 1)
+        groundGeo.firstMaterial!.emission.contents = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
         let groundNode = SCNNode(geometry: groundGeo)
         let emptySand = SCNNode()
         emptySand.addChildNode(groundNode)
         emptySand.position.y = -1.63
         rootNode.addChildNode(emptySand)
-        
     }
-  
+    
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         let dt: Double
         if runningUpdate {
@@ -123,11 +116,11 @@ class MenuScene: SCNScene, SCNSceneRendererDelegate {
         
         timeLast = time
         
-        moveGrass(node: emptyGrass1, dt: dt)
-        moveGrass(node: emptyGrass2, dt: dt)
+        moveFloor(node: emptyFloor1, dt: dt)
+        moveFloor(node: emptyFloor2, dt: dt)
     }
     
-    func moveGrass(node: SCNNode, dt: Double) {
+    func moveFloor(node: SCNNode, dt: Double) {
         node.position.x += Float(dt * speedConstant)
         
         if node.position.x <= -4.45 {
