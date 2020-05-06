@@ -6,9 +6,6 @@
 //  Copyright © 2020 Hisoka Morow. All rights reserved.
 //
 import SceneKit
-import UIKit
-import QuartzCore
-import SceneKit
 import AudioToolbox
 struct bodyType {
     
@@ -22,22 +19,10 @@ class GameViewController: UIViewController {
     var ball: SCNNode!
     var gameScene: MainScene?
     var menuScene: MenuScene?
+    
     static var gameOverlay: GameSKOverlay?
     
     let scnScene = SCNScene()
-    let cameraNode = SCNNode()
-    
-    var textt: SCNNode!
-    var firstText: SCNText!
-    var left = Bool()
-    var correctPath = Bool()
-    var repeatt = Bool()
-    var prevBoxNumber = Int()
-    var scoreLabel = UILabel()
-    var highscoreLabel = UILabel()
-    var str = String()
-    var showStatusBar = true
-    var tesst:  SCNNode!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,30 +61,6 @@ class GameViewController: UIViewController {
             scnView.delegate = scene
             scnView.overlaySKScene = overlay
         }
-    }
-    
-    func setupCamera() {
-        cameraNode.camera = SCNCamera()
-        cameraNode.camera?.usesOrthographicProjection = true
-        cameraNode.camera?.orthographicScale = 3
-        cameraNode.position = SCNVector3Make(20,20,20)
-        cameraNode.eulerAngles = SCNVector3Make(-45,45,0)
-        scnScene.rootNode.addChildNode(cameraNode)
-    }
-    
-    
-    func setupLight() {
-        let light = SCNNode()
-        light.light = SCNLight()
-        light.light?.type = SCNLight.LightType.directional
-        light.eulerAngles = SCNVector3Make(-45,45,0)
-        scnScene.rootNode.addChildNode(light)
-        
-        let light2 = SCNNode()
-        light2.light = SCNLight()
-        light2.light?.type = SCNLight.LightType.directional
-        light2.eulerAngles = SCNVector3Make(45,45,0)
-        scnScene.rootNode.addChildNode(light2)
     }
     
     func checkNodeAtPosition(_ touch: UITouch) -> String? {

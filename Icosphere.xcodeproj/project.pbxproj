@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12AD174F2460AE3300E5566D /* FadeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12AD174E2460AE3300E5566D /* FadeClass.swift */; };
+		12BD67962463479400799446 /* BallClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD67952463479400799446 /* BallClass.swift */; };
+		12BD679824634F6600799446 /* CoinClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12BD679724634F6600799446 /* CoinClass.swift */; };
+		12E4CB47245EE19200CCE974 /* CameraAndLights.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E4CB46245EE19200CCE974 /* CameraAndLights.swift */; };
 		12FF48EB244F3CC6007CA6D7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF48EA244F3CC6007CA6D7 /* AppDelegate.swift */; };
 		12FF48ED244F3CC6007CA6D7 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 12FF48EC244F3CC6007CA6D7 /* art.scnassets */; };
 		12FF48EF244F3CC6007CA6D7 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12FF48EE244F3CC6007CA6D7 /* GameViewController.swift */; };
@@ -19,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		12AD174E2460AE3300E5566D /* FadeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeClass.swift; sourceTree = "<group>"; };
+		12BD67952463479400799446 /* BallClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallClass.swift; sourceTree = "<group>"; };
+		12BD679724634F6600799446 /* CoinClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinClass.swift; sourceTree = "<group>"; };
+		12E4CB46245EE19200CCE974 /* CameraAndLights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraAndLights.swift; sourceTree = "<group>"; };
 		12FF48E7244F3CC6007CA6D7 /* Icosphere.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Icosphere.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12FF48EA244F3CC6007CA6D7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12FF48EC244F3CC6007CA6D7 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -68,6 +76,10 @@
 				12FF48FF244F3CEE007CA6D7 /* GameSKOverlay.swift */,
 				12FF48FE244F3CEE007CA6D7 /* MainScene.swift */,
 				12FF4900244F3CEE007CA6D7 /* MenuScene.swift */,
+				12E4CB46245EE19200CCE974 /* CameraAndLights.swift */,
+				12BD67952463479400799446 /* BallClass.swift */,
+				12BD679724634F6600799446 /* CoinClass.swift */,
+				12AD174E2460AE3300E5566D /* FadeClass.swift */,
 				12FF48F0244F3CC6007CA6D7 /* Main.storyboard */,
 				12FF48F3244F3CCB007CA6D7 /* Assets.xcassets */,
 				12FF48F5244F3CCB007CA6D7 /* LaunchScreen.storyboard */,
@@ -150,9 +162,13 @@
 			files = (
 				12FF4902244F3CEE007CA6D7 /* GameSKOverlay.swift in Sources */,
 				12FF4901244F3CEE007CA6D7 /* MainScene.swift in Sources */,
+				12E4CB47245EE19200CCE974 /* CameraAndLights.swift in Sources */,
+				12BD679824634F6600799446 /* CoinClass.swift in Sources */,
 				12FF4903244F3CEE007CA6D7 /* MenuScene.swift in Sources */,
 				12FF48EF244F3CC6007CA6D7 /* GameViewController.swift in Sources */,
 				12FF48EB244F3CC6007CA6D7 /* AppDelegate.swift in Sources */,
+				12BD67962463479400799446 /* BallClass.swift in Sources */,
+				12AD174F2460AE3300E5566D /* FadeClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

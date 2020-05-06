@@ -1,4 +1,6 @@
+
 import SceneKit
+
 class MenuScene: SCNScene, SCNSceneRendererDelegate {
     
     let emptyFloor1 = SCNNode()
